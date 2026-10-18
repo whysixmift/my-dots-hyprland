@@ -90,12 +90,12 @@
     },
     "cpu": {
         "format": "󰍛 {usage}%",
-        "interval": 2,
+        "interval": 5,
         "tooltip": true
     },
     "memory": {
         "format": "󰘚 {percentage}%",
-        "interval": 2
+        "interval": 5
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",

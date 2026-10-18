@@ -8,7 +8,7 @@ hl.config({
             enabled           = vars.blurEnabled,
             xray              = vars.blurXray,
             special           = vars.blurSpecialWs,
-            ignore_opacity    = true, -- Allows opacity blurring
+            ignore_opacity    = false, -- Only blur actually transparent elements to save GPU cycles
             new_optimizations = true,
             popups            = vars.blurPopups,
             input_methods     = vars.blurInputMethods,

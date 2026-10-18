@@ -19,8 +19,8 @@ set_wallpaper() {
     pkill -x mpvpaper 2>/dev/null || true
     sleep 0.2
 
-    # Start mpvpaper on all outputs with hardware acceleration, infinite loop
-    mpvpaper '*' "$wall_path" --fork --mpv-options "no-audio loop --geometry=100%:100% --panscan=1.0"
+    # Start mpvpaper on all outputs with hardware acceleration and auto-pause when fullscreen
+    mpvpaper --auto-pause -a FULL '*' "$wall_path" --fork --mpv-options "no-audio loop --geometry=100%:100% --panscan=1.0"
 
     # Record current wallpaper and update waypaper config
     echo "$wall_path" > "$CURRENT_FILE"
