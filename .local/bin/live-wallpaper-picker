@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+# Live Wallpaper Manager & Engine for Hyprland / Wayland
+# Supports both GUI (Waypaper) and Rofi Quick Switcher
+
+WALLPAPER_DIR="$HOME/Videos/LiveWallpapers"
+CACHE_DIR="$HOME/.cache/live-wallpapers"
+CURRENT_FILE="$CACHE_DIR/current"
+
+mkdir -p "$WALLPAPER_DIR" "$CACHE_DIR/thumbs"
+
+set_wallpaper() {
+    local wall_path="$1"
+    if [[ ! -f "$wall_path" ]]; then
+        echo "Error: File '$wall_path' not found!"
+        return 1
+    fi
+
+    # Kill existing mpvpaper instances
+    pkill -x mpvpaper 2>/dev/null || true
+    sleep 0.2
+
+    # Start mpvpaper on all outputs with hardware acceleration, infinite loop
+    mpvpaper '*' "$wall_path" --fork --mpv-options "no-audio loop --geometry=100%:100% --panscan=1.0"
+
+    # Record current wallpaper and update waypaper config
+    echo "$wall_path" > "$CURRENT_FILE"
+    sed -i "s|^wallpaper = .*|wallpaper = $wall_path|" "$HOME/.config/waypaper/config.ini" 2>/dev/null || true
+    notify-send "Live Wallpaper" "Applied: $(basename "$wall_path")" -i video-x-generic 2>/dev/null || true
+}
+
+generate_thumbs() {
+    shopt -s nullglob
+    for vid in "$WALLPAPER_DIR"/*.{mp4,webm,mkv}; do
+        fname=$(basename "$vid")
+        thumb="$CACHE_DIR/thumbs/${fname}.png"
+        if [[ ! -f "$thumb" || "$vid" -nt "$thumb" ]]; then
+            ffmpeg -y -ss 00:00:01 -i "$vid" -vframes 1 -vf "scale=250:-1" "$thumb" -v quiet 2>/dev/null &
+        fi
+    done
+    wait
+}
+
+rofi_picker() {
+    generate_thumbs
+    local options=""
+    shopt -s nullglob
+    for vid in "$WALLPAPER_DIR"/*.{mp4,webm,mkv}; do
+        fname=$(basename "$vid")
+        name="${fname%.*}"
+        thumb="$CACHE_DIR/thumbs/${fname}.png"
+        if [[ -f "$thumb" ]]; then
+            options+="${name}\0icon\x1f${thumb}\n"
+        else
+            options+="${name}\n"
+        fi
+    done
+
+    # Add GUI launcher option at the top
+    local menu_items="[Open Waypaper GUI]\0icon\x1fpreferences-desktop-wallpaper\n[Random Wallpaper]\0icon\x1fmedia-playlist-shuffle\n[Stop Live Wallpaper]\0icon\x1fprocess-stop\n${options}"
+
+    selected=$(echo -en "$menu_items" | rofi -dmenu -i -p "󰸉 Live Wallpaper" -theme-str 'listview { lines: 8; } element-icon { size: 3.5ch; }')
+
+    [[ -z "$selected" ]] && exit 0
+
+    case "$selected" in
+        "[Open Waypaper GUI]")
+            waypaper &
+            ;;
+        "[Random Wallpaper]")
+            random_wallpaper
+            ;;
+        "[Stop Live Wallpaper]")
+            pkill -x mpvpaper 2>/dev/null
+            notify-send "Live Wallpaper" "Stopped" 2>/dev/null
+            ;;
+        *)
+            # Match selected name to file
+            for vid in "$WALLPAPER_DIR"/*.{mp4,webm,mkv}; do
+                fname=$(basename "$vid")
+                name="${fname%.*}"
+                if [[ "$name" == "$selected" ]]; then
+                    set_wallpaper "$vid"
+                    break
+                fi
+            done
+            ;;
+    esac
+}
+
+random_wallpaper() {
+    shopt -s nullglob
+    files=("$WALLPAPER_DIR"/*.{mp4,webm,mkv})
+    if (( ${#files[@]} > 0 )); then
+        random_file="${files[RANDOM % ${#files[@]}]}"
+        set_wallpaper "$random_file"
+    fi
+}
+
+stop_wallpaper() {
+    pkill -x mpvpaper 2>/dev/null || true
+    notify-send "Live Wallpaper" "Stopped live wallpaper" 2>/dev/null || true
+}
+
+case "${1:-}" in
+    --gui)
+        waypaper &
+        ;;
+    --set)
+        if [[ -n "${2:-}" ]]; then
+            set_wallpaper "$2"
+        else
+            echo "Usage: live-wallpaper-picker --set /path/to/video.mp4"
+        fi
+        ;;
+    --random)
+        random_wallpaper
+        ;;
+    --stop)
+        stop_wallpaper
+        ;;
+    --thumbs)
+        generate_thumbs
+        ;;
+    --menu|--rofi|"")
+        if [[ "$1" == "--gui" ]]; then
+            waypaper &
+        else
+            rofi_picker
+        fi
+        ;;
+    *)
+        echo "Live Wallpaper Engine Manager"
+        echo "Usage: live-wallpaper-picker [options]"
+        echo "  --menu, -m      Open visual Rofi wallpaper picker (default)"
+        echo "  --gui, -g       Launch Waypaper GUI engine"
+        echo "  --set <file>    Set a specific wallpaper"
+        echo "  --random, -r    Pick and apply a random wallpaper"
+        echo "  --stop, -s      Stop live wallpaper playback"
+        ;;
+esac

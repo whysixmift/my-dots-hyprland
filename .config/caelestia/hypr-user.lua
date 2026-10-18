@@ -1,0 +1,3 @@
+-- Caelestia User Configuration
+-- You can add your custom shortcuts and startup applications here.
+-- Display configuration is now managed dynamically via nwg-displays.

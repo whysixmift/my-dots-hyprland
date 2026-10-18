@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Live Wallpaper Picker
+Comment=Quick menu to pick and apply live/animated video wallpapers
+Exec=/home/avrjulian/.local/bin/live-wallpaper-picker --menu
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;Utility;
+Keywords=wallpaper;video;live;anime;engine;
+StartupNotify=true

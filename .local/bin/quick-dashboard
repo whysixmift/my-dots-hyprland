@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Aesthetic Quick Dashboard & Control Center for Hyprland
+
+options="󰸉  Live Wallpaper Engine\n󰕾  Audio Mixer (Volume)\n󰤨  Network & WiFi\n󰂯  Bluetooth Connections\n󰃠  Night Light (Hyprsunset Toggle)\n󰌌  View Keybinds Cheat Sheet\n󰒲  Suspend System\n󰐥  Power & Session Menu"
+
+chosen=$(echo -e "$options" | rofi -dmenu -i -p "󰍜 Dashboard" -theme-str '
+window {
+    width: 420px;
+    border-radius: 18px;
+    border: 2px solid rgba(203, 166, 247, 0.4);
+    background-color: rgba(24, 24, 37, 0.94);
+    padding: 14px;
+}
+listview {
+    lines: 8;
+    spacing: 6px;
+}
+element {
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+element selected {
+    background-color: rgba(203, 166, 247, 0.25);
+    text-color: #cba6f7;
+    border: 1px solid rgba(203, 166, 247, 0.5);
+}
+')
+
+[[ -z "$chosen" ]] && exit 0
+
+case "$chosen" in
+    *"Live Wallpaper Engine"*)
+        ~/.local/bin/live-wallpaper-picker --menu &
+        ;;
+    *"Audio Mixer"*)
+        pwvucontrol || pavucontrol &
+        ;;
+    *"Network"*)
+        nm-connection-editor || foot -e nmtui &
+        ;;
+    *"Bluetooth"*)
+        blueman-manager || foot -e bluetoothctl &
+        ;;
+    *"Night Light"*)
+        if pgrep -x hyprsunset > /dev/null; then
+            pkill -x hyprsunset
+            notify-send "Night Light" "Hyprsunset Disabled" -i weather-clear-night
+        else
+            hyprsunset &
+            notify-send "Night Light" "Hyprsunset Enabled" -i weather-clear-night
+        fi
+        ;;
+    *"Keybinds"*)
+        foot -e less ~/.config/hypr/hyprland/keybinds.lua &
+        ;;
+    *"Suspend"*)
+        systemctl suspend
+        ;;
+    *"Power & Session Menu"*)
+        wlogout || rofi -show power-menu &
+        ;;
+esac

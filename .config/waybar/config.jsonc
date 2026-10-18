@@ -1,0 +1,155 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 28,
+    "margin-top": 3,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 5,
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "mpris",
+        "custom/lyrics",
+        "clock"
+    ],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "pulseaudio",
+        "backlight",
+        "network",
+        "battery",
+        "custom/wallpaper",
+        "custom/dashboard"
+    ],
+    "custom/launcher": {
+        "format": "󰣇",
+        "on-click": "rofi -show drun || fuzzel",
+        "tooltip": true,
+        "tooltip-format": "Applications Menu"
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "active-only": false,
+        "format": "{name}",
+        "persistent-workspaces": {
+            "*": [1, 2, 3, 4, 5]
+        }
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 35,
+        "separate-outputs": true,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹 $1",
+            "(.*) - Visual Studio Code": "󰨞 $1",
+            "(.*) - Foot": "󰞷 $1",
+            "^$": "󰇄 Desktop"
+        }
+    },
+    "mpris": {
+        "format": "󰓇 {title} - {artist}",
+        "format-paused": "󰓇 <i>{title}</i>",
+        "max-length": 35,
+        "on-click": "hyprctl dispatch 'hl.dsp.global(\"caelestia:showall\")'",
+        "on-click-right": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "tooltip": true,
+        "tooltip-format": "{player}: {title} by {artist} (Click to open Spotify Lyrics Dashboard)",
+        "ignored-players": ["firefox"]
+    },
+    "custom/lyrics": {
+        "format": "󰎆 Lyrics",
+        "on-click": "hyprctl dispatch 'hl.dsp.global(\"caelestia:showall\")'",
+        "tooltip": true,
+        "tooltip-format": "Open Caelestia Spotify Dashboard & Synced Lyrics"
+    },
+    "clock": {
+        "format": "󰥔 {:%H:%M   󰃭 %a, %d %b}",
+        "format-alt": "󰥔 {:%Y-%m-%d %H:%M:%S}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#b4befe'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'><b>{}</b></span>",
+                "weeks": "<span color='#89dceb'><b>W{}</b></span>",
+                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+    "cpu": {
+        "format": "󰍛 {usage}%",
+        "interval": 2,
+        "tooltip": true
+    },
+    "memory": {
+        "format": "󰘚 {percentage}%",
+        "interval": 2
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 Muted",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "󰏲",
+            "portable": "󰏲",
+            "car": "󰄋",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "scroll-step": 3,
+        "on-click": "pwvucontrol || pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"]
+    },
+    "network": {
+        "format-wifi": "󰤨 {essid}",
+        "format-ethernet": "󰈀 {ipaddr}",
+        "format-linked": "󰈀 {ifname} (No IP)",
+        "format-disconnected": "󰤭 Offline",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+        "tooltip-format-wifi": "󰤨 {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "󰈀 {ifname}",
+        "tooltip-format-disconnected": "Disconnected"
+    },
+    "battery": {
+        "states": {
+            "good": 85,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "custom/wallpaper": {
+        "format": "󰸉",
+        "on-click": "/home/avrjulian/.local/bin/live-wallpaper-picker --menu",
+        "tooltip": true,
+        "tooltip-format": "Live Wallpaper Engine Picker"
+    },
+    "custom/dashboard": {
+        "format": "󰍜",
+        "on-click": "/home/avrjulian/.local/bin/quick-dashboard",
+        "tooltip": true,
+        "tooltip-format": "Aesthetic Dashboard & Quick Controls"
+    }
+}

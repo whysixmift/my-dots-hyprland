@@ -1,0 +1,101 @@
+/**
+ * macOS Spotlight Theme for Rofi
+ * Catppuccin Mocha Color Palette
+ */
+
+* {
+    bg-col:                      #1e1e2e;
+    bg-col-trans:                #181825e6;
+    bg-col-light:                #313244;
+    border-col:                  #45475a;
+    selected-col:                #313244;
+    accent-col:                  #cba6f7;
+    fg-col:                      #cdd6f4;
+    fg-col2:                     #f38ba8;
+    grey:                        #a6adc8;
+
+    width:                       640px;
+    font:                        "Noto Sans 12";
+}
+
+element-text, element-icon , mode-toggler {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+window {
+    height:                      420px;
+    border:                      1px;
+    border-color:                @border-col;
+    background-color:            @bg-col-trans;
+    border-radius:               16px;
+    location:                    center;
+    anchor:                      center;
+}
+
+mainbox {
+    background-color:            transparent;
+    children:                    [ "inputbar", "listview" ];
+    padding:                     16px;
+    spacing:                     12px;
+}
+
+inputbar {
+    background-color:            @bg-col-light;
+    border-radius:               12px;
+    padding:                     10px 14px;
+    spacing:                     10px;
+    children:                    [ "prompt", "entry" ];
+}
+
+prompt {
+    background-color:            transparent;
+    text-color:                  @accent-col;
+    font:                        "JetBrainsMono Nerd Font 14";
+    str:                         "󰍉";
+}
+
+entry {
+    background-color:            transparent;
+    text-color:                  @fg-col;
+    placeholder:                 "Search applications, files, calc...";
+    placeholder-color:           @grey;
+    font:                        "Noto Sans 13";
+}
+
+listview {
+    border:                      0px;
+    padding:                     4px 0px;
+    margin:                      0px;
+    columns:                     1;
+    lines:                       6;
+    background-color:            transparent;
+    spacing:                     6px;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+}
+
+element {
+    padding:                     8px 12px;
+    background-color:            transparent;
+    text-color:                  @fg-col;
+    border-radius:               10px;
+    spacing:                     14px;
+}
+
+element-icon {
+    size:                        40px;
+}
+
+element-text {
+    vertical-align:              0.5;
+    text-color:                  inherit;
+}
+
+element selected {
+    background-color:            @selected-col;
+    text-color:                  @accent-col;
+    border:                      1px;
+    border-color:                rgba(203, 166, 247, 0.3);
+}

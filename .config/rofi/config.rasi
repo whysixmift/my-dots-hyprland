@@ -1,0 +1,14 @@
+configuration {
+    modi:                       "drun,filebrowser,calc,emoji,run";
+    show-icons:                 true;
+    icon-theme:                 "Papirus-Dark";
+    display-drun:               "󰀻 Apps";
+    display-filebrowser:        "󰈙 Files";
+    display-calc:               "󰃬 Calc";
+    display-emoji:              "󰞅 Emoji";
+    display-run:                "󰅟 Run";
+    drun-display-format:        "{name}";
+    font:                       "Noto Sans Medium 12";
+}
+
+@theme "spotlight"

@@ -1,0 +1,35 @@
+{
+    "appearance": {
+        "transparency": {
+            "enabled": true
+        }
+    },
+    "background": {
+        "enabled": false,
+        "wallpaperEnabled": false
+    },
+    "bar": {
+        "excludedScreens": [
+            ".*"
+        ],
+        "persistent": false,
+        "showOnHover": false
+    },
+    "sidebar": {
+        "dragThreshold": 65
+    },
+    "utilities": {
+        "vpn": {
+            "enabled": false,
+            "provider": [
+                {
+                    "displayName": "TRASPAC VPN",
+                    "id": "vpn-mup3ikfu-81nsy",
+                    "interface": "tras",
+                    "name": "wireguard"
+                }
+            ],
+            "selectedProvider": "vpn-mup3ikfu-81nsy"
+        }
+    }
+}

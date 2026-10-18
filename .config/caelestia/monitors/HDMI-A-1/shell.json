@@ -1,0 +1,16 @@
+{
+    "background": {
+        "enabled": false,
+        "wallpaperEnabled": false
+    },
+    "bar": {
+        "excludedScreens": [
+            ".*"
+        ],
+        "persistent": false,
+        "showOnHover": false
+    },
+    "sidebar": {
+        "dragThreshold": 65
+    }
+}

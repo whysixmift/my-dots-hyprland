@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Waypaper
+Comment=GUI wallpaper setter for Wayland and X11
+Exec=/home/avrjulian/.local/bin/waypaper
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;Utility;
+Keywords=wallpaper;background;anime;live;engine;
+StartupNotify=true
